@@ -56,4 +56,10 @@
             {% endfor %}
         </tr>
     </table>
+    <table border="1">
+        <caption>Summary total</caption>
+        <tr>
+            <td>total amount spent: {{summary_overall.overall |floatformat:2 }}</td>
+        </tr>
+    </table>
 {% endblock %}
