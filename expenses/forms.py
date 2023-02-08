@@ -11,6 +11,10 @@ class ExpenseSearchForm(forms.ModelForm):
     category = forms.ModelMultipleChoiceField(
         widget=forms.CheckboxSelectMultiple, queryset=Category.objects.all()
     )
+    #
+    # sorting_by = forms.ChoiceField(
+    #     choices=['date: ascending', 'date: descending', 'category: ascending', 'category: descending']
+    # )
 
     class Meta:
         model = Expense

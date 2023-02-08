@@ -30,6 +30,11 @@ class ExpenseListView(ListView):
             if grouping:
                 queryset = queryset.order_by('date', '-pk')
 
+            # sorting_by = form.cleaned_data['sorting_by']
+            # if sorting_by:
+            #     queryset.order_by('ascending', 'descending')
+
+
         return super().get_context_data(
             form=form,
             object_list=queryset,
