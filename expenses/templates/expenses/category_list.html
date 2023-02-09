@@ -1,26 +1,43 @@
 {% extends "base.html" %}
 
 {% block content %}
-<a href="{% url 'expenses:category-create' %}">add</a>
+    <a href="{% url 'expenses:category-create' %}">add</a>
+    <a href="{% url 'expenses:expense-list' %}">back</a>
+    <form method="get" action="">
+        {{ form.as_p }}
+        <button type="submit">search</button>
+    </form>
+    <br/>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>no.</th>
+            <th>category</th>
+            <th>action</th>
+            <th>how many</th>
 
-<table border="1">
-	<thead>
-		<tr>
-			<th>name</th>
-			<th>actions</th>
-		</tr>
-	</thead>
-	<tbody>
-		{% for obj in object_list %}
-		<tr>
-			<td>
-				{{obj.name}}
-			</td>
-			<td>
-				<a href="{% url 'expenses:category-delete' obj.id %}">delete</a>
-			</td>
-		</tr>
-		{% endfor %}
-	</tbody>
-</table>
+        </tr>
+        </thead>
+        <tbody>
+        {% for obj in object_list %}
+            <tr>
+                <td>{{ page_obj.start_index|add:forloop.counter0 }}.</td>
+                <td>{{ obj.name|default:"-" }}</td>
+                <td>
+                    <a href="#">edit</a>
+                    <a href="#">delete</a>
+                </td>
+                <td>{{ obj.expenses|default:"0" }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="6">no items</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br/>
+
+    {% include "_pagination.html" %}
+
 {% endblock %}
