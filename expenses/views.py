@@ -1,6 +1,6 @@
 from django.views.generic.list import ListView
 
-from .forms import ExpenseSearchForm
+from .forms import ExpenseSearchForm, CategorySearchForm
 from .models import Expense, Category
 from .reports import summary_per_category, summary_per_year_month, summary_overall
 
@@ -34,18 +34,35 @@ class ExpenseListView(ListView):
             # if sorting_by:
             #     queryset.order_by('ascending', 'descending')
 
-
         return super().get_context_data(
             form=form,
             object_list=queryset,
             summary_per_category=summary_per_category(queryset),
-
             summary_per_year_month=summary_per_year_month(queryset),
             summary_overall=summary_overall(queryset),
-
             **kwargs)
 
 
 class CategoryListView(ListView):
     model = Category
     paginate_by = 5
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        queryset = object_list if object_list is not None else self.object_list
+
+        form = CategorySearchForm(self.request.GET)
+        if form.is_valid():
+            name = form.cleaned_data.get('name', '').strip()
+            if name:
+                queryset = queryset.filter(name__icontains=name)
+
+            category = form.cleaned_data.get('category')
+            if category:
+                queryset = queryset.filter(category__in=category)
+
+        return super().get_context_data(
+            form=form,
+            object_list=queryset,
+            total_objects=queryset.count(),
+            **kwargs
+        )
