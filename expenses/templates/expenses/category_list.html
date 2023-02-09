@@ -14,6 +14,8 @@
             <th>no.</th>
             <th>category</th>
             <th>action</th>
+            <th>how many</th>
+
         </tr>
         </thead>
         <tbody>
@@ -25,6 +27,7 @@
                     <a href="#">edit</a>
                     <a href="#">delete</a>
                 </td>
+                <td>{{ obj.expenses|default:"0" }}</td>
             </tr>
         {% empty %}
             <tr>

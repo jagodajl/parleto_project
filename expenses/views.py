@@ -3,6 +3,7 @@ from django.views.generic.list import ListView
 from .forms import ExpenseSearchForm, CategorySearchForm
 from .models import Expense, Category
 from .reports import summary_per_category, summary_per_year_month, summary_overall
+from .models import count_expenses
 
 
 class ExpenseListView(ListView):
@@ -59,6 +60,10 @@ class CategoryListView(ListView):
             category = form.cleaned_data.get('category')
             if category:
                 queryset = queryset.filter(category__in=category)
+
+            for category in queryset:
+                category.expenses = count_expenses(category)
+
 
         return super().get_context_data(
             form=form,

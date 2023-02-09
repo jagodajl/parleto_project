@@ -26,3 +26,7 @@ class Expense(models.Model):
 
     def __str__(self):
         return f'{self.date} {self.name} {self.amount}'
+
+def count_expenses(category: Category):
+    return Expense.objects.filter(category=category).count()
+
